@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Employee;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
+    $employees = Employee::all();
+    return view('welcome', compact('employees','lastday'));
 });
+Route::get('/json/employees', function () {
+    $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
+    $employees = Employee::all();
+    return response()->json([
+        'employees'=> $employees,
+        'lastday'=> $lastday,
+    ]);
+})->name('json_employees');
