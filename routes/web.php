@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Employee;
+use App\Models\Attendance;
+use App\Http\Controllers\AttendanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,9 +22,12 @@ Route::get('/', function () {
 });
 Route::get('/json/employees', function () {
     $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
-    $employees = Employee::all();
+    $employees = Employee::with('attendances')->withCount('attendances')->get();
     return response()->json([
         'employees'=> $employees,
         'lastday'=> $lastday,
     ]);
 })->name('json_employees');
+
+Route::post('attendance/store', [AttendanceController::class,'store']);
+Route::post('attendance/destroy', [AttendanceController::class,'destroy']);

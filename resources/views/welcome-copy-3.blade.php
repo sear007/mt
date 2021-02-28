@@ -33,65 +33,48 @@
       }
   </style>
   <div class="content-wrapper">
-    <div class="content-header">
+    <section class="content">
       <div class="container-fluid">
-        <div class="current_date">
-          <h3></h3>
-          <p></p>
-      </div>
         <div class="table-responsive">
           <table id="attendence_table" class="table table-hover table-sm attendence_table table-bordered ">
               <thead>
                 <tr>
-                  <td>អវត្តមានបុគ្គលិក </td>
+                  <th>អវត្តមានបុគ្គលិក </th>
+                  @for ($i = 1; $i <= $lastday; $i++)
+                    <th>{{ $i }}</th>
+                  @endfor
                 </tr>
               </thead>
               <tbody>
+                @foreach ($employees as $item)
+                    <tr>
+                      <td>{{ $item->name }}</td>
+                      @for ($i = 01; $i <= $lastday; $i++)
+                      <td class="p-3">
+                        <form>
+                          <input type="checkbox" data-id="{{ $item->id }}" value="2021-02-{{ $i }}" name="form_{{ $item->id }}" class="check form-control form-control-sm" />
+                        </form>
+                      </td>
+                      @endfor
+                    </tr>
+                @endforeach
               </tbody>
           </table>
         </div>
-      </div>
-    </div>
-    <section class="content">
-      <div class="container-fluid">
-        <input class="form-control form_123" type="checkbox" />
       </div>
     </section>
   </div>
 
 @section('scripts')
-<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('plugins/moment/locales.js') }}"></script>
-<script src="{{ asset('/dist/js/moment-holidays.js') }}"></script>
-<script src="{{ asset('/dist/js/attendence.js') }}"></script>
+
 <script>
-getEmployees();
-$(".form_1").change(function() {
+$(".check").change(function() {
     if(this.checked) {
-        console.log(changed);
+        console.log($(this).attr('data-id'));
+    }else{
+      console.log('uncheck');
     }
 });
-function getEmployees(){
-  $.get({
-    url:"{{ route('json_employees') }}",
-    success: function(data){
-      console.log(data);
-      let td = '';
-        for(let $i = 1; $i<=data.lastday;$i++){
-          td += `
-          <td class="form">
-            <form>
-              <input onclick="alert('ok')" class="form-control form_${data.employees}" type="checkbox" />
-            </form>
-          </td>
-          `;
-        }
-      $.map(data.employees, function(v,i){
-        $("tbody").append(`<tr><td>${v.name}</td>${td}</tr>`);
-      })
-    }
-  })
-}
 </script>
 @endsection
 

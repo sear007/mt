@@ -1,0 +1,35 @@
+.attendence_table thead th{
+    text-align: center;
+    vertical-align: middle;
+  }
+  th#today{
+    background: #c4d8c7;
+  }
+  th.sunday .day_number, th.sunday .day_khmer, th.sunday .day_english {
+      color: red
+  }
+  .day_number, .day_khmer, .day_english{
+    display: block;
+  }
+  .day_english{
+    font-size: 9pt;
+  }
+  .day_number{
+    font-size: 12pt;
+    font-weight: bold;
+    color: #306af1;
+  }
+  .day_khmer{
+    font-size: 8pt;
+    font-weight: bold;
+    color: #306af1;
+  }
+  #today .day_number{
+    color: #000000;
+  }
+  th.sunday{
+    background: #ece2e2!important;
+  }
+  .sunday .day_number{
+    color: red!important;
+  }

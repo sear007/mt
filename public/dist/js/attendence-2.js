@@ -39,7 +39,6 @@ document.getElementById("btn-next-week").addEventListener("click",function(){
     var substract = 7;
     if(document.getElementById('currentWeek').value == 22){
         var substract = lastDay-28;
-        console.log("substract");
     }
     document.getElementById('currentWeek').value = +document.getElementById('currentWeek').value+7;
     document.getElementById('reduce').value = +document.getElementById('reduce').value-substract;
