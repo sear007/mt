@@ -25,4 +25,9 @@ class AttendanceController extends Controller
             return response()->json("បានដក់អវត្តមានរួចរាល់។");
         }
     }
+    public function SumitRequest(Request $request){
+        if($request->ajax()){
+            return response()->json($request);
+        }
+    }
 }

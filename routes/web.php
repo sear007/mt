@@ -31,3 +31,4 @@ Route::get('/json/employees', function () {
 
 Route::post('attendance/store', [AttendanceController::class,'store']);
 Route::post('attendance/destroy', [AttendanceController::class,'destroy']);
+Route::post('attendance/request_leave', [AttendanceController::class,'SumitRequest']);

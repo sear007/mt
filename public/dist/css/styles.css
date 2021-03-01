@@ -27,9 +27,27 @@
   #today .day_number{
     color: #000000;
   }
-  th.sunday{
+  th.sunday,th.holiday{
     background: #ece2e2!important;
   }
-  .sunday .day_number{
+  .sunday .day_number,.holiday .day_number{
     color: red!important;
+  }
+
+
+  .tableFixHead {
+    overflow-y: auto;
+    height: 800px;
+  }
+  
+  .tableFixHead table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  
+  .tableFixHead th {
+    position: sticky;
+    top: 0;
+    background: #eee;
   }
