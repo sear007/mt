@@ -26,12 +26,12 @@
       .attendence_table thead tr{
           background-color: #FFFFFF;
       }
-      @media only screen  and (min-width : 1249px)  { .att_box{width: 40px;} .att_box_td{ width: 40px;}  }
+      @media only screen  and (min-width : 1300px)  { .att_box{width: 40px;} .att_box_td{ width: 40px;}  }
     </style>
     <section class="content py-3">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12 col-lg-12 col-xl-10">
+          <div class="col-md-12">
             <div class="card" id="attendance_card">
               <div class="card-header">
                 <h3 class="card-title">អវត្តមានបុគ្គលិក</h3>
@@ -59,7 +59,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 col-xl-2">
+          <div class="col-md-4 col-lg-4">
             <div class="card">
               <div class="card-header">
                 <h3 class="">
@@ -67,7 +67,7 @@
                 </h3>
               </div>
               <div class="card-body">
-                <form id="request-leave-employee-form needs-validation" novalidate>
+                <form id="request-leave-employee-form">
                   @csrf
                   <select class="form-control form-control-lg mb-2" name="request_leave_employee" id="request-leave-employee"><option>ជ្រើសឈ្មោះបុគ្គលិក</option></select>
                   <div class="has-validation mb-2">
@@ -98,5 +98,6 @@
 <script src="{{ asset('dist/js/attendence.js') }}"></script>
 <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('dist/js/request_leave.js') }}"></script>
+<script> document.querySelector(".tableFixHead").style.height = (screen.height/1.8)+"px"; </script>
 @endsection
 @endsection

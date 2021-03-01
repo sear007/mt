@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 class AttendanceController extends Controller
@@ -27,7 +27,17 @@ class AttendanceController extends Controller
     }
     public function SumitRequest(Request $request){
         if($request->ajax()){
-            return response()->json($request);
+             $query = Attendance::where('employee_id','=',$request->request_leave_employee)->where('date','=',Carbon::parse($request->request_leave_date)->format('Y-m-d'))->get();
+            if(count($query)<=0){
+                $action = new Attendance;
+                $action->employee_id = $request->request_leave_employee;
+                $action->attendance = false;
+                $action->date = Carbon::parse($request->request_leave_date)->format('Y-m-d');
+                $action->request_leave = $request->request_leave_reason;
+                $action->save();
+                return response()->json(["message"=>"បានដាក់ច្បាប់វត្តមានរួចរាល់", "status_code"=>200]);
+            }
+            return response()->json(["message"=>"វត្តមានសំរាប់ថ្ងៃ ".$request->request_leave_date." មានរួចរាល់។", "status_code"=>500]);
         }
     }
 }

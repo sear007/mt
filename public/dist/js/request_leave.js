@@ -14,7 +14,7 @@ $("#request-leave-btn").click(function(e){
         },3000);
     }
     if($("#request_leave_date").val() && $("#request-leave-reason").val() ){
-        alert('ok');
+        submitRequest();
     }
     e.preventDefault();
 });
@@ -40,11 +40,10 @@ function disable(optoin){
     $("#request-leave-btn").prop("disabled",optoin);
 }
 function submitRequest(){
-    data = $("#request-leave-employee-form").serialize();
     $.ajax({
         url:"/attendance/request_leave",
         method: "POST",
-        data: data,
+        data: $("#request-leave-employee-form").serialize(),
         success: function(data){
             console.log(data);
         }
