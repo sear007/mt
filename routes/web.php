@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Employee;
 use App\Models\Attendance;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +34,6 @@ Route::post('attendance/store', [AttendanceController::class,'store']);
 Route::post('attendance/destroy', [AttendanceController::class,'destroy']);
 Route::post('attendance/request_leave', [AttendanceController::class,'SumitRequest']);
 Route::post('attendance/request_leave/destroy', [AttendanceController::class,'DestroyRequest']);
+
+
+Route::get('employees', [EmployeeController::class,'index'])->name('employees');

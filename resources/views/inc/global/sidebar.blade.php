@@ -11,7 +11,13 @@
           <li class="nav-item">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-calendar"></i>
-              <p>Attendence</p>
+              <p>តារាងស្រង់វត្តមាន</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>តារាងបុគ្គលិក</p>
             </a>
           </li>
         </ul>
