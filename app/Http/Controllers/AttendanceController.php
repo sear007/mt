@@ -20,7 +20,18 @@ class AttendanceController extends Controller
     }
     public function destroy(Request $request){
         if($request->ajax()){
-            $action = Attendance::where('employee_id','=',$request->id)->where('date','=',$request->date);
+            $action = Attendance::where('employee_id','=',$request->id)->where('date','=',$request->date)->first();
+            $success = $action->delete();
+            if($success ){
+                return response()->json("បានដក់អវត្តមានរួចរាល់។");
+            }
+            return $request->id;
+            
+        }
+    }
+    public function DestroyRequest(Request $request){
+        if($request->ajax()){
+            $action = Attendance::find($request->id);
             $action->delete();
             return response()->json("បានដក់អវត្តមានរួចរាល់។");
         }

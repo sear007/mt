@@ -1,5 +1,4 @@
 
-
 $(document).ready(function(){
   const Toast = Swal.mixin({
     toast: true,
@@ -7,6 +6,76 @@ $(document).ready(function(){
     showConfirmButton: false,
     timer: 3000
   });
+
+  //request_leave 
+  $("#request-leave-btn").click(function(e){
+    if(!$("#request-leave-reason").val()){
+        $("#request-leave-reason").addClass('is-invalid');
+        setTimeout(function(){
+            $("#request-leave-reason").removeClass('is-invalid');
+        },3000);
+    }
+    if(!$("#request_leave_date").val()){
+        $("#request_leave_date").addClass('is-invalid');
+        setTimeout(function(){
+            $("#request_leave_date").removeClass('is-invalid');
+        },3000);
+    }
+    if($("#request_leave_date").val() && $("#request-leave-reason").val() ){
+        submitRequest();
+    }
+    e.preventDefault();
+});
+disable(true);
+$("#request-leave-employee").change(function(){
+    disable(false);
+});
+$.get({
+url:"/json/employees",
+success: function(data){
+    $.map(data.employees, function(v,i){
+    let option = '';
+    option += `<option value="${v.id}">${v.name}</option>`;
+    $("#request-leave-employee").append(option);
+    });
+}
+})
+
+$('#request_leave_date').datetimepicker({
+    format: 'DD-MM-YYYY'
+});
+function disable(optoin){
+    $("#request-leave-btn").prop("disabled",optoin);
+}
+function submitRequest(){
+    $.ajax({
+        url:"/attendance/request_leave",
+        method: "POST",
+        data: $("#request-leave-employee-form").serialize(),
+        success: function(data){
+
+            if(data.status_code === 200){
+                Toast.fire({
+                    icon: 'success',
+                    html: `${data.message}`,
+                })
+            }else{
+                Toast.fire({
+                    icon: 'error',
+                    html: `${data.message}`,
+                })
+            }
+            renderCalendar();
+        }
+    })
+}
+
+
+
+
+
+
+  // Render Calendar
   var _holidays = {
     'M': {//Month, Day
             '01/01': ["New Year's Day","ចូលឆ្នាំសកល"],
@@ -78,14 +147,47 @@ $(document).ready(function(){
                 let option = '';
                 
                 for(let $i = 1; $i<=new Date(date.getFullYear(), date.getMonth()+1,0).getDate();$i++){
-                   td += `<td class="att_box_td" style="text-align:center">
+                   td += `<td id="td-${v.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" class="att_box_td" style="text-align:center">
                    <input class="att_box " id="${v.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" data-id="${v.id}" data-date="${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" type="checkbox" />
                    </td>`;
                 }
                 $("tbody").append(`<tr><td>${v.name}</td>${td}</tr>`);
                 if(v.attendances_count > 0 ){
                   $.map(v.attendances,function(v){
-                    $(`#${v.employee_id}-${v.date}`).prop('checked',true);
+                    if(v.attendance){
+                      $(`#${v.employee_id}-${v.date}`).prop('checked',true);
+                    }else{
+                      $(`#td-${v.employee_id}-${v.date}`).empty();
+                      $(`#td-${v.employee_id}-${v.date}`).append('ច');
+                      $(`#td-${v.employee_id}-${v.date}`).attr('data-toggle','tooltip');
+                      $(`#td-${v.employee_id}-${v.date}`).css('background-color','#dce0b7');
+                      $(`#td-${v.employee_id}-${v.date}`).css('cursor','pointer');
+                      $(`#td-${v.employee_id}-${v.date}`).prop('title',`${v.request_leave}`);
+                      $('[data-toggle="tooltip"]').tooltip();
+                      $(`#td-${v.employee_id}-${v.date}`).click(function(){
+                        Swal.fire({
+                          title: 'ដាក់ច្បាប់ '+ v.date,
+                          html: `${v.request_leave}`,
+                          showDenyButton: true,
+                          showCancelButton: true,
+                          showConfirmButton: false,
+                          denyButtonText: `ដក់ច្បាប់វិញ`,
+                          showCancelButton:false,
+                        }).then((result) => {
+                          if (result.isDenied) {
+                            $.ajax({
+                              url:"/attendance/request_leave/destroy",
+                              method:"post",
+                              data:{"_token":$('meta[name="csrf-token"]').attr('content'),"id":v.id},
+                              success: function(data){
+                                Swal.fire(data, '', 'success');
+                              }
+                            });
+                            renderCalendar();
+                          }
+                        })
+                      })
+                    }
                   });
                 }
               });
