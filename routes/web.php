@@ -37,3 +37,4 @@ Route::post('attendance/request_leave/destroy', [AttendanceController::class,'De
 
 
 Route::get('employees', [EmployeeController::class,'index'])->name('employees');
+Route::post('employees', [EmployeeController::class,'store'])->name('employees_store');

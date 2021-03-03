@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class EmployeeController extends Controller
 {
     /**
@@ -12,10 +12,15 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $employees = Employee::orderBy('id','asc')->paginate($request->show);
+            return response()->json(['data'=>$employees,'code'=>200]);
+        }
+        return view('pages.employees');
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +40,38 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        return 123;
+
+        $messages = [
+            'name.required' => 'សូមអភ័យទោស, លោកអ្នកបំពេញឈ្មោះបុគ្គលិក។',
+            'salary.required' => 'សូមអភ័យទោស, លោកអ្នកប្រាក់ខែបុគ្គលិក។',
+        ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'salary' => 'required',
+        ],$messages);
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()]);
+        }else{
+            $employee = Employee::create([
+                'name'=>$request->name,
+                'salary'=>$request->salary,
+            ]);
+
+            return response()->json([
+                'message'=>'ឈ្មោះបុគ្គលិក '.$request->name.' ត្រូវបានដាក់បញ្ចូលរួចរាល់។',
+                'code'=>200,
+            ]);
+        }
+
+        // $employee = Employee::create([
+        //     'name'=>$request->name,
+        //     'salary'=>$request->salary,
+        // ]);
+
+        // return response()->json([
+        //     'message'=>'',
+        //     'code'=>200,
+        // ]);
     }
 
     /**
