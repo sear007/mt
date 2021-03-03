@@ -42,12 +42,14 @@ class EmployeeController extends Controller
     {
 
         $messages = [
-            'name.required' => 'សូមអភ័យទោស, លោកអ្នកបំពេញឈ្មោះបុគ្គលិក។',
-            'salary.required' => 'សូមអភ័យទោស, លោកអ្នកប្រាក់ខែបុគ្គលិក។',
+            'name.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញឈ្មោះបុគ្គលិក។',
+            'salary.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញមុខដំណែងបុគ្គលិក។',
+            'position.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញប្រាក់ខែបុគ្គលិក។',
         ];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'salary' => 'required',
+            'position' => 'required',
         ],$messages);
         if ($validator->fails()) {
             return response()->json(['errors'=>$validator->errors()]);
@@ -55,6 +57,7 @@ class EmployeeController extends Controller
             $employee = Employee::create([
                 'name'=>$request->name,
                 'salary'=>$request->salary,
+                'position'=>$request->position,
             ]);
 
             return response()->json([

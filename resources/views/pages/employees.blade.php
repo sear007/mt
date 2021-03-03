@@ -18,6 +18,8 @@
                                   @csrf
                                   <label for="">ឈ្មោះបុគ្គលិក</label>
                                   <input type="text" name="name" id="name" class="form-control mb-2">
+                                  <label for="">មុខដំណែង</label>
+                                  <input type="text" name="position" id="position" class="form-control mb-2">
                                   <label for="">ប្រាក់ខែ</label>
                                   <input type="number" name="salary" id="salary" class="form-control mb-4">
                                   <button id="btnStoreDataEmployee" class="btn-flat btn btn-default" type="button" >បញ្ចូលទិន្នន័យ </button>
@@ -49,6 +51,7 @@
                                       <tr>
                                           <th>#</th>
                                           <th>ឈ្មោះ</th>
+                                          <th>មុខងារ</th>
                                       </tr>
                                   </thead>
                                   <tbody></tbody>
@@ -75,10 +78,11 @@
             url:`employees/?show=${show}&page=${page}`,
             success: function(data){
                 if(data.code === 200){
+                    console.log(data.data)
                     $("#card-list-employees").find($(".overlay")).remove();
                     $("#table-list-employees tbody").empty();
                     let paginates = '';
-                    for (let i = 1; i <= data.data.total/data.data.per_page; i++){
+                    for (let i = 1; i <= data.data.last_page; i++){
                         paginates += `<li class="page-item ${data.data.current_page===i?'active disabled':''}"><a class="page-link" data-show="${$("select[name='show']").val()}" data-page="${i}" href="#">${i}</a></li>`;
                     }
                     $("#pagination-employees").empty();
@@ -86,13 +90,14 @@
                     
                     $.map(data.data.data, function(v,i){
                         var data = `<tr>
-                        <td></td>
+                        <td>${v.id}</td>
                         <td>${v.name}</td>
+                        <td><span class="text-muted">${v.position}</span></td>
                         </tr>`;
                         $("#table-list-employees").append(data);
-                        $("#table-list-employees tbody tr").each(function(idx){
-                            $(this).children("td:eq(0)").html(idx+1);
-                        })
+                        // $("#table-list-employees tbody tr").each(function(idx){
+                        //     $(this).children("td:eq(0)").html(idx+1);
+                        // })
                     });
                     $(".page-link").click(function(e){
                         getDataEmployees($(this).attr('data-show'),$(this).attr('data-page'));

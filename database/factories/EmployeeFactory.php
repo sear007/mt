@@ -21,8 +21,10 @@ class EmployeeFactory extends Factory
      */
     public function definition()
     {
+        //$faker_company = Faker\Provider\en_US\Company::create();
         return [
             'name' => $this->faker->name,
+            'position' => $this->faker->jobTitle,
             'salary' => rand(150,300),
         ];
     }
