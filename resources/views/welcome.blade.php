@@ -50,8 +50,6 @@
                 <!--request_leave_card -->
               </div>
             </div><!-- Attandance -->
-
-
           </div>
 
         </div>

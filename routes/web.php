@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 Route::get('/json/employees', function () {
     $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
-    $employees = Employee::with('attendances')->withCount('attendances')->get();
+    $employees = Employee::with('attendances')->withCount(['attendances'])->get();
     return response()->json([
         'employees'=> $employees,
         'lastday'=> $lastday,
@@ -38,3 +38,6 @@ Route::post('attendance/request_leave/destroy', [AttendanceController::class,'De
 
 Route::get('employees', [EmployeeController::class,'index'])->name('employees');
 Route::post('employees', [EmployeeController::class,'store'])->name('employees_store');
+Route::get('employees/edit/{id}', [EmployeeController::class,'edit'])->name('employees_edit');
+Route::post('employees/update', [EmployeeController::class,'update'])->name('employees_update');
+Route::post('employees/destroy', [EmployeeController::class,'destroy'])->name('employees_destroy');

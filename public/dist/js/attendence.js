@@ -103,6 +103,7 @@ function submitRequest(){
 
     
     const date = new Date;
+ 
     renderCalendar();
 
     document.getElementById("next-month").addEventListener("click",function(){
@@ -123,7 +124,7 @@ function submitRequest(){
         document.getElementById("next-month").innerHTML = `${moment.months(date.getMonth()+1)} <i class="fas fa-chevron-right mr-2 fa-lg"></i>` ;
         for(let i=1; i<=lastDay;i++){
             moment.locale('km');
-            if(i=== new Date().getDate() && date.getMonth() === new Date().getMonth()){
+            if( i === new Date().getDate() && date.getMonth() === new Date().getMonth() ){
                 days += `<th id="today" class="${moment.weekdaysShort(i) == 'អា' ? 'sunday':'' } ${_holidays['M'][pad(i,2)+'/'+pad(date.getMonth()+1,2)] ? 'holiday':''}">
                 <span class="day_number">${i}</span>
                 <span class="day_khmer">${moment.weekdaysShort(i)}</span>
@@ -136,24 +137,26 @@ function submitRequest(){
             }
             monthDays.innerHTML = days;
         }
+        days += "<th>វ</th><th>អ</th><th>ច</th>";
+        monthDays.innerHTML = days;
         moment.locale('en');
+        console.log(new Date().getDate());
         $('tbody').empty();
         $("#attendance_card").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
         $.get({
             url:"/json/employees",
             success: function(data){
-              $.map(data.employees, function(v,i){
+              $.map(data.employees, function(value,i){
                 let td = '';
                 let option = '';
-                
                 for(let $i = 1; $i<=new Date(date.getFullYear(), date.getMonth()+1,0).getDate();$i++){
-                   td += `<td id="td-${v.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" class="att_box_td" style="text-align:center">
-                   <input class="att_box " id="${v.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" data-id="${v.id}" data-date="${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" type="checkbox" />
+                   td += `<td  style="${$i === new Date().getDate() && date.getMonth() === new Date().getMonth() ? 'background: #c4d8c7':''}" id="td-${value.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" class="att_box_td text-center" style="text-align:center">
+                    <input ${$i > new Date().getDate() && date.getMonth() == new Date().getMonth() ? 'disabled':''}  class="att_box " id="${value.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" data-id="${value.id}" data-date="${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" type="checkbox" />
                    </td>`;
                 }
-                $("tbody").append(`<tr><td>${v.name}</td>${td}</tr>`);
-                if(v.attendances_count > 0 ){
-                  $.map(v.attendances,function(v){
+                $("tbody").append(`<tr><td>${value.name}</td>${td} <td>${value.attendances_count}</td><td></td><td></td></tr>`);
+                if(value.attendances_count > 0 ){ 
+                  $.map(value.attendances,function(v){
                     if(v.attendance){
                       $(`#${v.employee_id}-${v.date}`).prop('checked',true);
                     }else{

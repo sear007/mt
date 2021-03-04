@@ -9,7 +9,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy text-sm nav-compact nav-flat" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header">MT Dashboard</li>
           <li class="nav-item">
-            <a href="" class="nav-link active">
+            <a href="{{ url('/') }}" class="nav-link active">
               <i class="nav-icon fas fa-calendar"></i>
               <p>តារាងស្រង់វត្តមាន</p>
             </a>
