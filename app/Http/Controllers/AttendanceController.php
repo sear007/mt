@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Employee;
+use App\Models\RequestLeave;
 class AttendanceController extends Controller
 {
     
     public function store(Request $request)
     {
         if($request->ajax()){
-            $action = new Attendance;
-            $action->employee_id = $request->id;
-            $action->attendance = true;
-            $action->date = $request->date;
-            $action->save();
+            $employee = Employee::find($request->id);
+            $employee->attendances()->create([
+                'employee_id'=>$request->id,
+                'attendance'=>true,
+                'date'=>$request->date,    
+            ]);
             return response()->json("បានដាក់អវត្តមានរួចរាល់។");
         }
     }
@@ -38,14 +41,13 @@ class AttendanceController extends Controller
     }
     public function SumitRequest(Request $request){
         if($request->ajax()){
-             $query = Attendance::where('employee_id','=',$request->request_leave_employee)->where('date','=',Carbon::parse($request->request_leave_date)->format('Y-m-d'))->get();
+             $query = RequestLeave::where('employee_id','=',$request->request_leave_employee)->where('date','=',Carbon::parse($request->request_leave_date)->format('Y-m-d'))->get();
             if(count($query)<=0){
-                $action = new Attendance;
-                $action->employee_id = $request->request_leave_employee;
-                $action->attendance = false;
-                $action->date = Carbon::parse($request->request_leave_date)->format('Y-m-d');
-                $action->request_leave = $request->request_leave_reason;
-                $action->save();
+                $action = RequestLeave::create([
+                    'employee_id'=> $request->request_leave_employee,
+                    'date'=> Carbon::parse($request->request_leave_date)->format('Y-m-d'),
+                    'reason'=> $request->request_leave_reason,
+                ]);
                 return response()->json(["message"=>"បានដាក់ច្បាប់វត្តមានរួចរាល់", "status_code"=>200]);
             }
             return response()->json(["message"=>"វត្តមានសំរាប់ថ្ងៃ ".$request->request_leave_date." មានរួចរាល់។", "status_code"=>500]);

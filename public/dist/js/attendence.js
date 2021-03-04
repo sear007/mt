@@ -53,7 +53,6 @@ function submitRequest(){
         method: "POST",
         data: $("#request-leave-employee-form").serialize(),
         success: function(data){
-
             if(data.status_code === 200){
                 Toast.fire({
                     icon: 'success',
@@ -66,6 +65,9 @@ function submitRequest(){
                 })
             }
             renderCalendar();
+        },
+        error: function(x,s){
+          console.error(x.responseText);
         }
     })
 }
@@ -140,13 +142,14 @@ function submitRequest(){
         days += "<th>វ</th><th>អ</th><th>ច</th>";
         monthDays.innerHTML = days;
         moment.locale('en');
-        console.log(new Date().getDate());
         $('tbody').empty();
         $("#attendance_card").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
         $.get({
             url:"/json/employees",
             success: function(data){
+              
               $.map(data.employees, function(value,i){
+                console.log(data);
                 let td = '';
                 let option = '';
                 for(let $i = 1; $i<=new Date(date.getFullYear(), date.getMonth()+1,0).getDate();$i++){
@@ -210,7 +213,11 @@ function submitRequest(){
                     Toast.fire({
                       icon: 'success',
                       html: `ជំរាបសួរ! ទិន្នន័យត្រូវបានបញ្ចូន សូមអរគុណ។`,
-                    })
+                    });
+                    renderCalendar();
+                  },
+                  error:function(x,s){
+                    console.error(x.responseText);
                   }
                 });
               }

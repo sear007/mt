@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 Route::get('/json/employees', function () {
     $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
-    $employees = Employee::with('attendances')->withCount(['attendances'])->get();
+    $employees = Employee::with(['attendances','requestLeave'])->withCount(['attendances','requestLeave'])->get();
     return response()->json([
         'employees'=> $employees,
         'lastday'=> $lastday,

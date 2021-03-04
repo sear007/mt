@@ -3,7 +3,7 @@
   <div class="content-wrapper">
     <section class="content py-3">
       <div class="container-fluid">
-        <div class="row">
+        <div class="row">s
           <div class="col-md-12">
             {{-- Attendance Card --}}
             <div class="card" id="attendance_card">
