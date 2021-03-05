@@ -144,12 +144,12 @@ function submitRequest(){
         moment.locale('en');
         $('tbody').empty();
         $("#attendance_card").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
+  
         $.get({
-            url:"/json/employees",
+            url:`/json/employees`,
             success: function(data){
-              
+              console.log(data);
               $.map(data.employees, function(value,i){
-                console.log(data);
                 let td = '';
                 let option = '';
                 for(let $i = 1; $i<=new Date(date.getFullYear(), date.getMonth()+1,0).getDate();$i++){
@@ -158,8 +158,14 @@ function submitRequest(){
                    </td>`;
                 }
                 $("tbody").append(`<tr><td>${value.name}</td>${td} <td>${value.attendances_count}</td><td></td><td></td></tr>`);
-                if(value.attendances_count > 0 ){ 
-                  $.map(value.attendances,function(v){
+                
+              });
+
+              $.get({
+                url:`/json/attendances?last_day=${lastDay}&month=${date.getMonth()+1}&year=${date.getFullYear()}`,
+                success:function(data){
+                  console.log(data);
+                  $.map(data.attendances,function(v,i){
                     if(v.attendance){
                       $(`#${v.employee_id}-${v.date}`).prop('checked',true);
                     }else{
@@ -194,9 +200,10 @@ function submitRequest(){
                         })
                       })
                     }
-                  });
+                  })
                 }
               });
+              
               $(".att_box").change(function(){
                 if(this.checked) {
                     submitData($(this).attr("data-id"),$(this).attr("data-date"));
@@ -239,6 +246,9 @@ function submitRequest(){
             }
         });
         $('[data-toggle="tooltip"]').tooltip();
+
+
+
     };
     function pad (str, max) {
       str = str.toString();

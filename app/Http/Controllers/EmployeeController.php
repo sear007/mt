@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,29 @@ class EmployeeController extends Controller
             return response()->json(['data'=>$employees,'code'=>200]);
         }
         return view('pages.employees');
+    }
+
+    public function employeeJson(Request $request){
+        $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
+        $employees = Employee::with(['attendances','requestLeave'])->withCount(['attendances','requestLeave'])->get();
+        $start = $request->year."-".sprintf('%02d',$request->month)."-01";
+        $end = $request->year."-".sprintf('%02d',$request->month)."-".$request->last_day;
+        $attendances = Attendance::whereBetween('date',[$start,$end])->get();
+        $date = $request;
+        return response()->json([
+            'employees'=> $employees,
+            'lastday'=> $lastday,
+            'request'=>$attendances,
+        ]);
+    }
+    public function AttendancesJson(Request $request)
+    {
+        $start = $request->year."-".sprintf('%02d',$request->month)."-01";
+        $end = $request->year."-".sprintf('%02d',$request->month)."-".$request->last_day;
+        $attendances = Attendance::whereBetween('date',[$start,$end])->get();
+        return response()->json([
+            'attendances'=>$attendances,
+        ]);
     }
 
 
