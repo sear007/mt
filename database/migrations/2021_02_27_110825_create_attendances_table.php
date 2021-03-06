@@ -17,6 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->integer('employee_id');
             $table->boolean('attendance');
+            $table->string('request_leave')->nullable();
             $table->string('date');
         });
     }

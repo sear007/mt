@@ -6,7 +6,6 @@ $(document).ready(function(){
     showConfirmButton: false,
     timer: 3000
   });
-
   //request_leave 
   $("#request-leave-btn").click(function(e){
     if(!$("#request-leave-reason").val()){
@@ -71,12 +70,6 @@ function submitRequest(){
         }
     })
 }
-
-
-
-
-
-
   // Render Calendar
   var _holidays = {
     'M': {//Month, Day
@@ -102,12 +95,8 @@ function submitRequest(){
             '20/11': ["Water Festival Ceremony","ព្រះ​រាជ​ពិធី​បុណ្យ​អុំ​ទូក បណ្ដែត​ប្រទីប និង​សំពះ​ព្រះ​ខែ អកអំបុក"],
         },
     };
-
-    
     const date = new Date;
- 
     renderCalendar();
-
     document.getElementById("next-month").addEventListener("click",function(){
         date.setMonth(date.getMonth() +1);
         renderCalendar();
@@ -120,10 +109,16 @@ function submitRequest(){
         const lastDay = new Date(date.getFullYear(), date.getMonth()+1,0).getDate();
         const monthDays = document.querySelector('#attendence_table thead tr');
         let days = `<th>ឈ្មោះបុគ្គលិក</th>`;
+        let holidays = '';
         moment.locale('km');
         document.querySelector(".card-title").innerHTML = `<span class="text-muted">តារាងស្រង់វត្តមាន ប្រចាំខែ </span> <strong>${moment.months(date.getMonth())}</strong> <strong>${date.getFullYear()}</strong>` ;
         document.getElementById("prev-month").innerHTML = `<i class="fas fa-chevron-left mr-2 fa-lg"></i> ${moment.months(date.getMonth()-1)}` ;
         document.getElementById("next-month").innerHTML = `${moment.months(date.getMonth()+1)} <i class="fas fa-chevron-right mr-2 fa-lg"></i>` ;
+        $("#data-print-start").val(`${date.getFullYear()}-${pad(date.getMonth()+1,2)}-01`);
+        $("#data-print-end").val(`${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${lastDay}`);
+        $("#data-print-month").val(`${pad(date.getMonth()+1,2)}`);
+        $("#data-print-year").val(`${date.getFullYear()}`);
+        $("#data-print-lastday").val(`${lastDay}`);
         for(let i=1; i<=lastDay;i++){
             moment.locale('km');
             if( i === new Date().getDate() && date.getMonth() === new Date().getMonth() ){
@@ -138,9 +133,20 @@ function submitRequest(){
                 </td>`;
             }
             monthDays.innerHTML = days;
+            if(_holidays['M'][pad(i,2)+'/'+pad(date.getMonth()+1,2)]){
+              holidays += `<li class="list-group-item"><strong class="text-danger">ថ្ងៃ${moment.weekdays(i)}</strong> <strong class="text-danger">ទី${pad(i,2)}</strong> : <span class="text-muted">${_holidays['M'][pad(i,2)+'/'+pad(date.getMonth()+1,2)][1]}</span></li>`
+            }
+            
+            document.querySelector("#card-holiday .card-header").innerHTML = `ថ្ងៃឈប់សំរាក់ប្រចាំខែ ${moment.months(date.getMonth())}`;
+            document.querySelector("#card-holiday .card-body").innerHTML = holidays;
         }
-        days += "<th>វ</th><th>អ</th><th>ច</th>";
-        monthDays.innerHTML = days;
+
+        if(holidays === ''){
+          $("#card-holiday").addClass('d-none');
+        }else{
+          $("#card-holiday").removeClass('d-none');
+        }
+        
         moment.locale('en');
         $('tbody').empty();
         $("#attendance_card").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
@@ -157,53 +163,73 @@ function submitRequest(){
                     <input ${$i > new Date().getDate() && date.getMonth() == new Date().getMonth() ? 'disabled':''}  class="att_box " id="${value.id}-${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" data-id="${value.id}" data-date="${date.getFullYear()}-${pad(date.getMonth()+1,2)}-${pad($i,2)}" type="checkbox" />
                    </td>`;
                 }
-                $("tbody").append(`<tr><td>${value.name}</td>${td} <td>${value.attendances_count}</td><td></td><td></td></tr>`);
-                
+                $("tbody").append(`<tr><td>${value.name}</td>${td}</tr>`);
               });
-
+              //Attendaces
               $.get({
-                url:`/json/attendances?last_day=${lastDay}&month=${date.getMonth()+1}&year=${date.getFullYear()}`,
-                success:function(data){
-                  console.log(data);
-                  $.map(data.attendances,function(v,i){
-                    if(v.attendance){
-                      $(`#${v.employee_id}-${v.date}`).prop('checked',true);
-                    }else{
-                      $(`#td-${v.employee_id}-${v.date}`).empty();
-                      $(`#td-${v.employee_id}-${v.date}`).append('ច');
-                      $(`#td-${v.employee_id}-${v.date}`).attr('data-toggle','tooltip');
-                      $(`#td-${v.employee_id}-${v.date}`).css('background-color','#dce0b7');
-                      $(`#td-${v.employee_id}-${v.date}`).css('cursor','pointer');
-                      $(`#td-${v.employee_id}-${v.date}`).prop('title',`${v.request_leave}`);
-                      $('[data-toggle="tooltip"]').tooltip();
-                      $(`#td-${v.employee_id}-${v.date}`).click(function(){
-                        Swal.fire({
-                          title: 'ដាក់ច្បាប់ '+ v.date,
-                          html: `${v.request_leave}`,
-                          showDenyButton: true,
-                          showCancelButton: true,
-                          showConfirmButton: false,
-                          denyButtonText: `ដក់ច្បាប់វិញ`,
-                          showCancelButton:false,
-                        }).then((result) => {
-                          if (result.isDenied) {
-                            $.ajax({
-                              url:"/attendance/request_leave/destroy",
-                              method:"post",
-                              data:{"_token":$('meta[name="csrf-token"]').attr('content'),"id":v.id},
-                              success: function(data){
-                                Swal.fire(data, '', 'success');
-                              }
-                            });
-                            renderCalendar();
-                          }
+                url: `/json/attendances?last_day=${lastDay}&month=${date.getMonth()+1}&year=${date.getFullYear()}`,
+                success:function(d){
+                  if(d.attendances.length > 0 ){
+                    let request_leaves = '';
+                    $.map(d.attendances,function(v){
+                      if(v.attendance){
+                        $(`#${v.employee_id}-${v.date}`).prop('checked',true);
+                      }else{
+                        request_leaves += `<li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">${data.employees[v.employee_id-1]['name']}</h5>
+                          <small>សុំច្បាប់</small>
+                        </div>
+                        <p class="mb-1">ហេតុផល៖ ${v.request_leave}</p>
+                        <small>${v.date}</small>
+                        </li>`;
+                        document.querySelector('#card-request-leave ul').innerHTML = request_leaves;
+                        $(`#td-${v.employee_id}-${v.date}`).addClass('request_leave');
+                        $(`#td-${v.employee_id}-${v.date}`).empty();
+                        $(`#td-${v.employee_id}-${v.date}`).append('ច');
+                        $(`#td-${v.employee_id}-${v.date}`).attr('data-toggle','tooltip');
+                        $(`#td-${v.employee_id}-${v.date}`).css('background-color','#dce0b7');
+                        $(`#td-${v.employee_id}-${v.date}`).css('cursor','pointer');
+                        $(`#td-${v.employee_id}-${v.date}`).prop('title',`${v.request_leave}`);
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $(`#td-${v.employee_id}-${v.date}`).click(function(){
+                          Swal.fire({
+                            title: 'ដាក់ច្បាប់ '+ v.date,
+                            html: `${v.request_leave}`,
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                            denyButtonText: `ដក់ច្បាប់វិញ`,
+                            showCancelButton:false,
+                          }).then((result) => {
+                            if (result.isDenied) {
+                              $.ajax({
+                                url:"/attendance/request_leave/destroy",
+                                method:"post",
+                                data:{"_token":$('meta[name="csrf-token"]').attr('content'),"id":v.id},
+                                success: function(data){
+                                  Swal.fire(data, '', 'success');
+                                }
+                              });
+                              renderCalendar();
+                            }
+                          })
                         })
-                      })
-                    }
-                  })
+                      }
+                    });
+                  }else{
+                    $("#card-request-leave").addClass('d-none');
+                  }
+                  moment.locale('km');
+                  if(document.querySelectorAll('.request_leave').length > 0){
+                    $("#card-request-leave").removeClass('d-none');
+                    $("#card-request-leave .card-title").text(`ឈ្មោះស្នើរសុំច្បាប់ប្រចាំខែ ${moment.months(date.getMonth())}/${date.getFullYear()}`);
+                  }
+                },
+                error:function(x,s){
+                  console.error(x.responseText);
                 }
               });
-              
               $(".att_box").change(function(){
                 if(this.checked) {
                     submitData($(this).attr("data-id"),$(this).attr("data-date"));
@@ -221,7 +247,7 @@ function submitRequest(){
                       icon: 'success',
                       html: `ជំរាបសួរ! ទិន្នន័យត្រូវបានបញ្ចូន សូមអរគុណ។`,
                     });
-                    renderCalendar();
+                    //renderCalendar();
                   },
                   error:function(x,s){
                     console.error(x.responseText);
@@ -243,16 +269,15 @@ function submitRequest(){
                 });
               }
               $("#attendance_card").find($(".overlay")).remove();
+            },
+            error:function(x,s){
+              console.error();
             }
         });
         $('[data-toggle="tooltip"]').tooltip();
-
-
-
     };
     function pad (str, max) {
       str = str.toString();
       return str.length < max ? pad("0" + str, max) : str;
     }
 })
-

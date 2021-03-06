@@ -34,7 +34,7 @@
     color: red!important;
   }
 
-
+/* 
   .tableFixHead {
     overflow-y: auto;
     height: 450px;
@@ -50,7 +50,7 @@
     position: sticky;
     top: 0;
     background: #eee;
-  }
+  } */
 
   .att_box_td{
     width: 20px;

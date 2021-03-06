@@ -59,6 +59,7 @@
                                   </thead>
                                   <tbody></tbody>
                               </table>
+                              <button id="pdf" class="btn btn-danger">TO PDF</button>
                               <div class="d-flex justify-content-between">
                                   <div id="pagination-employees"></div>
                                   <div id="page_status">បង្ហាញ <span id="page_from"></span> ដល់ <span id="page_to"></span> ក្នុង <span id="page_total"></span> </div>
@@ -247,4 +248,5 @@
     });
     
 </script>
+
 @endsection

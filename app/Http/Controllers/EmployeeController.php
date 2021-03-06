@@ -25,15 +25,10 @@ class EmployeeController extends Controller
 
     public function employeeJson(Request $request){
         $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
-        $employees = Employee::with(['attendances','requestLeave'])->withCount(['attendances','requestLeave'])->get();
-        $start = $request->year."-".sprintf('%02d',$request->month)."-01";
-        $end = $request->year."-".sprintf('%02d',$request->month)."-".$request->last_day;
-        $attendances = Attendance::whereBetween('date',[$start,$end])->get();
-        $date = $request;
+        $employees = Employee::all();
         return response()->json([
             'employees'=> $employees,
             'lastday'=> $lastday,
-            'request'=>$attendances,
         ]);
     }
     public function AttendancesJson(Request $request)
@@ -45,8 +40,6 @@ class EmployeeController extends Controller
             'attendances'=>$attendances,
         ]);
     }
-
-
     /**
      * Show the form for creating a new resource.
      *

@@ -5,29 +5,19 @@ use App\Models\Employee;
 use App\Models\Attendance;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
     $employees = Employee::all();
     return view('welcome', compact('employees','lastday'));
 });
 Route::get('/json/employees', [EmployeeController::class,'employeeJson']);
-Route::get('/json/attendances', [EmployeeController::class,'AttendancesJson']);
+Route::get('/json/attendances', [AttendanceController::class,'AttendancesJson']);
 
 Route::post('attendance/store', [AttendanceController::class,'store']);
 Route::post('attendance/destroy', [AttendanceController::class,'destroy']);
 Route::post('attendance/request_leave', [AttendanceController::class,'SumitRequest']);
 Route::post('attendance/request_leave/destroy', [AttendanceController::class,'DestroyRequest']);
+Route::post('attendance/print',[AttendanceController::class,'PrintAttendances'])->name('print_attendance');
 
 
 Route::get('employees', [EmployeeController::class,'index'])->name('employees');

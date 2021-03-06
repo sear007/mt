@@ -17,5 +17,5 @@ class Employee extends Model
     public function requestLeave()
     {
         return $this->hasMany(RequestLeave::class);
-    }
+    } 
 }
