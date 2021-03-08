@@ -67,7 +67,7 @@ class AttendanceController extends Controller
     }
     public function PrintAttendances(Request $request){
         $employees = Employee::all();
-        $attendances = Attendance::whereBetween('date',[$request->start,$request->end])->get();
+        $attendances = Attendance::whereBetween('date',[$request->start,$request->end])->with('employee')->get();
         return view('print.attendance',compact('request','attendances','employees'));
     }
 }

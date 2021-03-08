@@ -71,13 +71,32 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }}
 </style>
 <body>
+
+    @php
+        $weekMap = [
+            0 => 'អា',
+            1 => 'ច',
+            2 => 'អ',
+            3 => 'ព',
+            4 => 'ព្រ',
+            5 => 'សុ',
+            6 => 'ស',
+        ];
+    @endphp
+
     <div class="">
+        <h1>តារាងវត្តមានបុគ្គលិកប្រចាំខែ {{ \Carbon\Carbon::parse($request->year."-".$request->month."-01")->translatedFormat('F Y')}}</h1>
         <table class="table-striped " border="1" style="width:100%" >
             <thead>
                 <tr>
                     <th>ឈ្មោះបុគ្គលិក</th>
                     @for ($i = 1; $i <= $request->lastday; $i++)
-                        <th style="width:15px">{{ $i }}</th>
+                        <th style="width:15px">
+                            {{ $i }}
+                            <span style="display: block; {{ \Carbon\Carbon::parse($request->year."-".$request->month."-".sprintf('%02d',$i))->dayOfWeek === 0 ? "color:red":"" }}" >
+                                {{$weekMap[\Carbon\Carbon::parse($request->year."-".$request->month."-".sprintf('%02d',$i))->dayOfWeek]}}
+                            </span>
+                        </th>
                     @endfor
                     <th>វត្តមាន</th>
                     <th>ច្បាប់</th>
@@ -89,18 +108,39 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
                     <tr>
                         <td >{{ $employee->name }}</td>
                         @for ($i = 1; $i <= $request->lastday; $i++)
-                            <td id="{{ $request->year }}-{{ $request->month }}-{{ sprintf('%02d',$i) }}"></td>
+                            <td id="{{ $employee->id }}-{{ $request->year }}-{{ $request->month }}-{{ sprintf('%02d',$i) }}"></td>
                         @endfor
-                        <td id="">hi</td>
-                        <td>hi</td>
-                        <td>hi</td>
+                        <td id="count-attendance-{{ $employee->id }}">0</td>
+                        <td id="count-request-leave-{{ $employee->id }}">0</td>
+                        <td id="count-absense-{{ $employee->id }}">0</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
     @foreach ($attendances as $attendance)
-    <script> document.getElementById("{{ $attendance->date }}").innerHTML = '✓'; </script>
+        @if ($attendance->attendance)
+        <script> 
+            var td = document.getElementById("{{ $attendance->employee_id }}-{{ $attendance->date }}");
+                count = document.getElementById("count-attendance-{{ $attendance->employee_id }}");
+                absense = document.getElementById('count-absense-{{ $attendance->employee_id }}');
+                select = document.querySelectorAll('.employee{{$attendance->employee_id}}_attendance');
+                td.innerHTML = '✓'; 
+                td.classList.add("employee{{$attendance->employee_id}}_attendance"); 
+                count.innerHTML = select.length+1;
+                absense.innerHTML = "{{($request->lastday-4)}}"-(select.length+1);
+        </script>
+            
+        @else
+        <script> 
+             var td = document.getElementById("{{ $attendance->employee_id }}-{{ $attendance->date }}");
+             count = document.getElementById("count-request-leave-{{ $attendance->employee_id }}");
+             select = document.querySelectorAll('.employee{{$attendance->employee_id}}_request_leave');
+             td.innerHTML = 'ច'; 
+             td.classList.add('employee{{$attendance->employee_id}}_request_leave');
+             count.innerHTML = select.length+1;
+        </script>
+        @endif
     @endforeach
     <script type="text/javascript"> 
         window.addEventListener("load", window.print());

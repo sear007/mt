@@ -10,4 +10,8 @@ class Attendance extends Model
     use HasFactory;
     public $timestamps = false;
     protected $guarded = [];
+    public function employee()
+    {
+        return $this->hasOne(Employee::class,'id');
+    }
 }
