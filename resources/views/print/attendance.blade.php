@@ -117,7 +117,17 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
                 @endforeach
             </tbody>
         </table>
+
+        <h3 id="" style="margin-bottom:0 ">ឈ្មោះអ្នកសុំច្បាប់ {{ \Carbon\Carbon::parse($request->year."-".$request->month."-01")->translatedFormat('F Y')}} </h3>
+        <div style="padding: 0;margin:0; display:flex">
+            @foreach ($attendances as $attendance)
+                @if (!$attendance->attendance)
+                    <div style="margin-right: 10px">- ថ្ងៃទី {{\Carbon\Carbon::parse($attendance->date)->translatedFormat('j')}} : {{$attendance->employee['name']}} ({{$attendance->request_leave}})</div>
+                @endif
+            @endforeach
+        </div>
     </div>
+
     @foreach ($attendances as $attendance)
         @if ($attendance->attendance)
         <script> 
@@ -130,7 +140,6 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
                 count.innerHTML = select.length+1;
                 absense.innerHTML = "{{($request->lastday-4)}}"-(select.length+1);
         </script>
-            
         @else
         <script> 
              var td = document.getElementById("{{ $attendance->employee_id }}-{{ $attendance->date }}");
@@ -144,7 +153,7 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     @endforeach
     <script type="text/javascript"> 
         window.addEventListener("load", window.print());
-        window.onfocus = function () { setTimeout(function () { window.close(); }, 10); }
+        // window.onfocus = function () { setTimeout(function () { window.close(); }, 10); }
     </script>
 </body>
 </html>

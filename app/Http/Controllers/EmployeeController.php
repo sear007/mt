@@ -61,12 +61,10 @@ class EmployeeController extends Controller
 
         $messages = [
             'name.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញឈ្មោះបុគ្គលិក។',
-            'salary.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញមុខដំណែងបុគ្គលិក។',
             'position.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញប្រាក់ខែបុគ្គលិក។',
         ];
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'salary' => 'required',
             'position' => 'required',
         ],$messages);
         if ($validator->fails()) {
@@ -74,7 +72,6 @@ class EmployeeController extends Controller
         }else{
             $employee = Employee::create([
                 'name'=>$request->name,
-                'salary'=>$request->salary,
                 'position'=>$request->position,
             ]);
 
@@ -83,16 +80,6 @@ class EmployeeController extends Controller
                 'code'=>200,
             ]);
         }
-
-        // $employee = Employee::create([
-        //     'name'=>$request->name,
-        //     'salary'=>$request->salary,
-        // ]);
-
-        // return response()->json([
-        //     'message'=>'',
-        //     'code'=>200,
-        // ]);
     }
 
     /**
@@ -140,12 +127,10 @@ class EmployeeController extends Controller
     {
         $messages = [
             'name_edit.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញឈ្មោះបុគ្គលិក។',
-            'salary_edit.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញមុខដំណែងបុគ្គលិក។',
             'position_edit.required' => 'សូមអភ័យទោស, លោកអ្នកមិនបានបំពេញប្រាក់ខែបុគ្គលិក។',
         ];
         $validator = Validator::make($request->all(), [
             'name_edit' => 'required',
-            'salary_edit' => 'required',
             'position_edit' => 'required',
         ],$messages);
         if ($validator->fails()) {
@@ -153,7 +138,6 @@ class EmployeeController extends Controller
         }else{
             $employee = Employee::find($request->id);
             $employee->name = $request->name_edit;
-            $employee->salary = $request->salary_edit;
             $employee->position = $request->position_edit;
             $employee->update();
             return response()->json([

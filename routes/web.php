@@ -5,11 +5,13 @@ use App\Models\Employee;
 use App\Models\Attendance;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
-Route::get('/', function () {
-    $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
-    $employees = Employee::all();
-    return view('welcome', compact('employees','lastday'));
-});
+use App\Http\Controllers\DeployCableController;
+
+
+Route::get('/deploy_cable',[DeployCableController::class,'index'])->name('deploy_cable');
+
+
+Route::get('/attendance',[AttendanceController::class,'index'])->name('attendance');
 Route::get('/json/employees', [EmployeeController::class,'employeeJson']);
 Route::get('/json/attendances', [AttendanceController::class,'AttendancesJson']);
 

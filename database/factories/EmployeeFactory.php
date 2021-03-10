@@ -25,7 +25,6 @@ class EmployeeFactory extends Factory
         return [
             'name' => $this->faker->name,
             'position' => $this->faker->jobTitle,
-            'salary' => rand(150,300),
         ];
     }
 }

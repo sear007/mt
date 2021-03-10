@@ -11,7 +11,7 @@
 @yield('styles')
 <title>@yield('title')</title>
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
+<body class="hold-transition sidebar-collapse layout-fixed">
 <div class="wrapper"> 
 @include('inc.global.navbar')
 @include('inc.global.sidebar')

@@ -8,7 +8,11 @@ use App\Models\Employee;
 use App\Models\RequestLeave;
 class AttendanceController extends Controller
 {
-    
+    public function index(Request $request){
+        $lastday = \Carbon\Carbon::parse(\Carbon\Carbon::now())->endOfMonth()->format('d');
+        $employees = Employee::all();
+        return view('welcome', compact('employees','lastday'));
+    }
     public function store(Request $request)
     {
         if($request->ajax()){
@@ -54,7 +58,6 @@ class AttendanceController extends Controller
             return response()->json(["message"=>"វត្តមានសំរាប់ថ្ងៃ ".$request->request_leave_date." មានរួចរាល់។", "status_code"=>500]);
         }
     }
-
     public function AttendancesJson(Request $request)
     {
         $start = $request->year."-".sprintf('%02d',$request->month)."-01";

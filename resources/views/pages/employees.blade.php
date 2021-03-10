@@ -5,7 +5,7 @@
     <section class="content py-3">
       <div class="container-fluid">
           <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-12 col-lg-3">
                   <div class="card">
                       <div class="card-header">
                           <h3 class="card-title">
@@ -20,15 +20,13 @@
                                   <input type="text" name="name" id="name" class="form-control mb-2">
                                   <label for="">មុខដំណែង</label>
                                   <input type="text" name="position" id="position" class="form-control mb-2">
-                                  <label for="">ប្រាក់ខែ</label>
-                                  <input type="number" name="salary" id="salary" class="form-control mb-4">
                                   <button id="btnStoreDataEmployee" class="btn-flat btn btn-default" type="button" >បញ្ចូលទិន្នន័យ </button>
                               </form>
                           </div>
                       </div>
                   </div>
               </div>
-              <div class="col-md-9 col-lg-6">
+              <div class="col-md-12 col-lg-9">
                   <div class="card" id="card-list-employees">
                       <div class="card-header">
                           <h3 class="card-title">
@@ -53,13 +51,11 @@
                                           <th class="text-center">#</th>
                                           <th>ឈ្មោះ</th>
                                           <th>មុខងារ</th>
-                                          <th>ប្រាក់ខែ</th>
                                           <th><i class="fas fa-cogs"></i></th>
                                       </tr>
                                   </thead>
                                   <tbody></tbody>
                               </table>
-                              <button id="pdf" class="btn btn-danger">TO PDF</button>
                               <div class="d-flex justify-content-between">
                                   <div id="pagination-employees"></div>
                                   <div id="page_status">បង្ហាញ <span id="page_from"></span> ដល់ <span id="page_to"></span> ក្នុង <span id="page_total"></span> </div>
@@ -85,8 +81,6 @@
                             <input type="text" name="name_edit" id="name_edit" class="form-control mb-2">
                             <label for="">មុខដំណែង</label>
                             <input type="text" name="position_edit" id="position_edit" class="form-control mb-2">
-                            <label for="">ប្រាក់ខែ</label>
-                            <input type="number" name="salary_edit" id="salary_edit" class="form-control mb-4">
                             <button class="btn-flat btn btn-default" type="submit" > កែប្រែទិន្នន័យ </button>
                         </form>
                     </div>
@@ -127,7 +121,6 @@
                             <td>${v.id}</td>
                             <td>${v.name}</td>
                             <td><span class="text-muted">${v.position}</span></td>
-                            <td><span class="text-muted">$${v.salary.toFixed(2)}</span></td>
                             <td>
                                 <div class="btn-group btn-block">
                                     <button onclick="return editDataEmployee(${v.id})" class="btn btn-sm btn-flat btn-default"><i class="fas fa-edit"></i></button>
