@@ -112,6 +112,7 @@
                         let paginates = '';
                         for (let i = 1; i <= data.data.last_page; i++){
                             paginates += `<li class="page-item ${data.data.current_page===i?'active disabled':''}"><a class="page-link" data-show="${$("select[name='show']").val()}" data-page="${i}" href="#">${i}</a></li>`;
+                            
                         }
                         $("#pagination-employees").empty();
                         $("#pagination-employees").append(`<nav aria-label="Page navigation"><ul class="pagination" id="pagination-employees">${paginates}</ul></nav>`);

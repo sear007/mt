@@ -9,6 +9,7 @@ use App\Http\Controllers\DeployCableController;
 
 
 Route::get('/deploy_cable',[DeployCableController::class,'index'])->name('deploy_cable');
+Route::get('/deploy_cable/json',[DeployCableController::class,'getDataJson'])->name('getDataJson');
 
 
 Route::get('/attendance',[AttendanceController::class,'index'])->name('attendance');

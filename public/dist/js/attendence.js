@@ -111,7 +111,7 @@ function submitRequest(){
         let days = `<th>ឈ្មោះបុគ្គលិក</th>`;
         let holidays = '';
         moment.locale('km');
-        document.querySelector(".card-title").innerHTML = `<span class="text-muted">តារាងស្រង់វត្តមាន ប្រចាំខែ </span> <strong>${moment.months(date.getMonth())}</strong> <strong>${date.getFullYear()}</strong>` ;
+        document.querySelector(".card-title").innerHTML = `<span class="text-muted">តារាងស្រង់វត្តមាន ប្រចាំខែ </span> <strong>${moment.months(date.getMonth())}</strong> <strong>${k_number(date.getFullYear())}</strong>` ;
         document.getElementById("prev-month").innerHTML = `<i class="fas fa-chevron-left mr-2 fa-lg"></i> ${moment.months(date.getMonth()-1)}` ;
         document.getElementById("next-month").innerHTML = `${moment.months(date.getMonth()+1)} <i class="fas fa-chevron-right mr-2 fa-lg"></i>` ;
         $("#data-print-start").val(`${date.getFullYear()}-${pad(date.getMonth()+1,2)}-01`);
