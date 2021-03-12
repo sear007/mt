@@ -10,7 +10,7 @@ use App\Http\Controllers\DeployCableController;
 
 Route::get('/deploy_cable',[DeployCableController::class,'index'])->name('deploy_cable');
 Route::get('/deploy_cable/json',[DeployCableController::class,'getDataJson'])->name('getDataJson');
-
+Route::post('/deploy_cable/store',[DeployCableController::class,'store'])->name('deploy_cable_store');
 
 Route::get('/attendance',[AttendanceController::class,'index'])->name('attendance');
 Route::get('/json/employees', [EmployeeController::class,'employeeJson']);

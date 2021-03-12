@@ -10,4 +10,4 @@
     }
     return khmerNumber;
 };
-$('[data-toggle="tooltip"]').tooltip(); 
+$('[data-toggle="tooltip"]').tooltip();

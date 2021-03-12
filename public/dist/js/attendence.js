@@ -5,7 +5,7 @@ $(document).ready(function(){
     position: 'top-end',
     showConfirmButton: false,
     timer: 3000
-  });
+});
   //request_leave 
   $("#request-leave-btn").click(function(e){
     if(!$("#request-leave-reason").val()){
