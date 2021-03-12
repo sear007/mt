@@ -28,11 +28,11 @@
                                    <th>No</th>
                                    <th>Name POP</th>
                                    <th>Plan Code</th>
-                                   <th>Request<span>(Day)</span></th>
-                                   <th>Return<span>(Day)</span></th>
-                                   <th>Send File OPN<span>(Day)</span></th>
-                                   <th>Take Invoice<span>(Day)</span></th>
-                                   <th>Pay Money<span>(Day)</span></th>
+                                   <th>Request<span class="text-muted">(Day)</span></th>
+                                   <th>Return<span class="text-muted">(Day)</span></th>
+                                   <th>Send File OPN<span class="text-muted">(Day)</span></th>
+                                   <th>Take Invoice<span class="text-muted">(Day)</span></th>
+                                   <th>Pay Money<span class="text-muted">(Day)</span></th>
                                    <th><i class="fas fa-cogs"></i></th>
                                </tr>
                            </thead>
@@ -60,25 +60,32 @@
                         <form id="formAdd">
                             @csrf
                             <div class="form-group mb-3">
-                                <input placeholder="Name POP" name="name_pop" id="name_pop"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="name_pop">Name POP</span>
+                                <input name="name_pop" id="name_pop"  type="text" class="form-control form-control-sm">
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Plan Code" name="plan_code" id="plan_code"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="plan_code">Plan Code</span>
+                                <input name="plan_code" id="plan_code"  type="text" class="form-control form-control-sm" >
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Request Day" name="request_day" id="request_day"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="request_day">Request Day</span>
+                                <input name="request_day" id="request_day" data-toggle="datetimepicker" data-target="#request_day"  type="text" class="form-control form-control-smdatetimepicker-input" >
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Return Day" name="return_day" id="return_day"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="return_day">Return Day</span>
+                                <input name="return_day" id="return_day" data-toggle="datetimepicker" data-target="#return_day" type="text" class="form-control form-control-sm" >
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Send file opn" name="send_file_opn" id="send_file_opn"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="send_file_opn">Send file opn</span>
+                                <input name="send_file_opn" id="send_file_opn" data-toggle="datetimepicker" data-target="#send_file_opn"  type="text" class="form-control form-control-sm" >
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Take Invoice" name="take_invoice" id="take_invoice"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="take_invoice">Take Invoice</span>
+                                <input name="take_invoice" id="take_invoice" data-toggle="datetimepicker" data-target="#take_invoice"   type="text" class="form-control form-control-sm" >
                             </div>
                             <div class="form-group mb-3">
-                                <input placeholder="Pay Money" name="pay_money" id="pay_money"  type="text" class="form-control form-control-lg " >
+                                <span class="text-muted" for="pay_money">Pay Money</span>
+                                <input name="pay_money" id="pay_money" data-toggle="datetimepicker" data-target="#pay_money"  type="text" class="form-control form-control-sm" >
                             </div>
                             <button type="submit" class="btn btn-default btn-lg" >បញ្ចូនទិន្នន័យ</button>
                         </form>
@@ -91,14 +98,17 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('dist/css/bootstrap-datetimepicker.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('dist/css/sweetalert2.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('dist/css/animate.min.css') }}" />
 @endsection
 @section('scripts')
 <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('plugins/moment/locales.js') }}"></script>
+<script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('dist/js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('dist/js/deploy_cable.js') }}"></script>
 <script>
+    $('#request_day,#return_day,#send_file_opn,#take_invoice,#pay_money').datetimepicker({format: 'L'});
     $("#formAdd").submit(function(e){
         e.preventDefault();
         var formData = $(this).serialize();
@@ -110,10 +120,11 @@
                 method:"post",
                 data:formData,
                 success:function(data){
+                    console.log(data);
                     submitBtn.find('i').remove();
                     submitBtn.prop('disabled',false);
                     if(data.code===200){
-                        Toast.fire({ icon: 'success',html: `<span class="ml-2">${data.message}</span>`,});
+                        Toast.fire({ icon: 'success',html: `<span class="text-muted" class="ml-2">${data.message}</span>`,});
                         getDataDeployCable(1,$("select[name='show']").val(),true);
                     }else{
                         $.map(data.errors,function(v,i){
@@ -125,7 +136,7 @@
                 error:function(x,s){
                     submitBtn.find('i').remove();
                     submitBtn.prop('disabled',false);
-                    Toast.fire({ icon: 'error',html: `<span class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
+                    Toast.fire({ icon: 'error',html: `<span class="text-muted" class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="text-muted" class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
                 }
             })
     

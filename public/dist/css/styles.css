@@ -81,7 +81,7 @@
   .deploy_cable{
     border: 1px solid #353535;
   }
-  .table thead th,.table tbody td{
+  .deploy_cable thead th,.deploy_cable tbody td{
     border: 1px solid #353535;
   }
   .deploy_cable td, .deploy_cable th,.deploy_cable thead th{

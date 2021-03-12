@@ -82,11 +82,11 @@ window.getDataDeployCable = function(page,show,new_row){
                             <td>${ (data.current_page-1) * data.per_page +  i+1}</td>
                             <td>${v.name_pop}</td>
                             <td>${v.plan_code}</td>
-                            <td>${v.request_day?v.request_day:''}</td>
-                            <td>${v.return_day?v.return_day:''}</td>
-                            <td>${v.send_file_opn?v.send_file_opn:''}</td>
-                            <td>${v.take_invoice?v.take_invoice:''}</td>
-                            <td>${v.pay_money?v.pay_money:''}</td>
+                            <td>${v.request_day?moment(v.request_day).locale('en').format("DD/MM/YYYY"):''}</td>
+                            <td>${v.return_day?moment(v.return_day).locale('en').format("DD/MM/YYYY"):''}</td>
+                            <td>${v.send_file_opn?moment(v.send_file_opn).locale('en').format("DD/MM/YYYY"):''}</td>
+                            <td>${v.take_invoice?moment(v.take_invoice).locale('en').format("DD/MM/YYYY"):''}</td>
+                            <td>${v.pay_money?moment(v.pay_money).locale('en').format("DD/MM/YYYY"):''}</td>
                             <td>
                             <div class="btn-group">
                                 <button data-toggle="tooltip" title="កែសំម្រួល" class="btn btn-default btn-sm"><i class="fas fa-edit"></i></button>
@@ -100,15 +100,12 @@ window.getDataDeployCable = function(page,show,new_row){
                 $('[data-toggle="tooltip"]').tooltip();
             }else{
                 td = `<tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <h3 class="py-5">ទិន្នន័យគ្មាន</h3>
                         </td>
                     </tr>`;
                 $("#card-deploy-cable tbody").append(td);
             }
-
-
-
         }
     });
 }
