@@ -9,8 +9,10 @@
                    <div class="card-header">
                        <h3 class="card-title"></h3>
                        <div class="card-tools">
-                        <button id="print-data" data-html="true" data-toggle="tooltip" title="<h3>ព្រីនឯកសារ</h3>"  class="btn btn-default btn-lg"><i class="fas fa-print"></i></button>
-                        <button data-toggle="modal" data-target="#add" id="print-data" data-html="true" data-toggle="tooltip" title="<h3>បញ្ចូលទិន្នន័យ</h3>" class="btn btn-default btn-lg"><i class="fas fa-plus"></i></button>
+                        <a target="blank" href="{{url('/deploy_cable/print')}}" id="print-data" data-html="true" data-toggle="tooltip" title="<h3>ព្រីនឯកសារ</h3>"  class="btn btn-default btn-lg"><i class="fas fa-print"></i></a>
+                        <span data-html="true" data-toggle="tooltip" title="<h3>បញ្ចូលទិន្នន័យ</h3>">
+                            <button data-toggle="modal" data-target="#add" id="print-data"  class="btn btn-default btn-lg"><i class="fas fa-plus"></i></button>
+                        </span>
                        </div>
                        <div class="card-tools mr-3">
                         <select class="custom-select custom-select-lg" name="show">
@@ -22,24 +24,26 @@
                        </div>
                    </div>
                    <div class="card-body">
-                       <table class="table table-bordered table-sm deploy_cable" id="deploy_cable">
-                           <thead>
-                               <tr>
-                                   <th>No</th>
-                                   <th>Name POP</th>
-                                   <th>Plan Code</th>
-                                   <th>Request<span class="text-muted">(Day)</span></th>
-                                   <th>Return<span class="text-muted">(Day)</span></th>
-                                   <th>Send File OPN<span class="text-muted">(Day)</span></th>
-                                   <th>Take Invoice<span class="text-muted">(Day)</span></th>
-                                   <th>Pay Money<span class="text-muted">(Day)</span></th>
-                                   <th><i class="fas fa-cogs"></i></th>
-                               </tr>
-                           </thead>
-                           <tbody>
-                               
-                           </tbody>
-                       </table>
+                       <div class="table-responsive">
+                           <table class="table table-bordered table-sm deploy_cable" id="deploy_cable">
+                               <thead>
+                                   <tr>
+                                       <th>No</th>  
+                                       <th>Name POP</th>
+                                       <th>Plan Code</th>
+                                       <th>Request<span class="text-muted">(Day)</span></th>
+                                       <th>Return<span class="text-muted">(Day)</span></th>
+                                       <th>Send File OPN<span class="text-muted">(Day)</span></th>
+                                       <th>Take Invoice<span class="text-muted">(Day)</span></th>
+                                       <th>Pay Money<span class="text-muted">(Day)</span></th>
+                                       <th><i class="fas fa-cogs"></i></th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   
+                               </tbody>
+                           </table>
+                       </div>
                        <div class="my-5" id="pagination"></div>
                    </div>
                </div>
@@ -59,35 +63,61 @@
                     <div class="card-body">
                         <form id="formAdd">
                             @csrf
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="name_pop">Name POP</span>
-                                <input name="name_pop" id="name_pop"  type="text" class="form-control form-control-sm">
+                                <input name="name_pop" id="name_pop"  type="text" class="form-control form-control-sm form-control form-control-sm-sm">
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="plan_code">Plan Code</span>
-                                <input name="plan_code" id="plan_code"  type="text" class="form-control form-control-sm" >
+                                <input name="plan_code" id="plan_code"  type="text" class="form-control form-control-sm form-control form-control-sm-sm" >
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="request_day">Request Day</span>
-                                <input name="request_day" id="request_day" data-toggle="datetimepicker" data-target="#request_day"  type="text" class="form-control form-control-smdatetimepicker-input" >
+                                <div class="input-group date" id="request_day" data-target-input="nearest">
+                                    <input name="request_day" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#request_day"/>
+                                    <div class="input-group-append" data-target="#request_day" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="return_day">Return Day</span>
-                                <input name="return_day" id="return_day" data-toggle="datetimepicker" data-target="#return_day" type="text" class="form-control form-control-sm" >
+                                <div class="input-group date" id="return_day" data-target-input="nearest">
+                                    <input name="return_day" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#return_day"/>
+                                    <div class="input-group-append" data-target="#return_day" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="send_file_opn">Send file opn</span>
-                                <input name="send_file_opn" id="send_file_opn" data-toggle="datetimepicker" data-target="#send_file_opn"  type="text" class="form-control form-control-sm" >
+                                <div class="input-group date" id="send_file_opn" data-target-input="nearest">
+                                    <input name="send_file_opn" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#send_file_opn"/>
+                                    <div class="input-group-append" data-target="#send_file_opn" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="take_invoice">Take Invoice</span>
-                                <input name="take_invoice" id="take_invoice" data-toggle="datetimepicker" data-target="#take_invoice"   type="text" class="form-control form-control-sm" >
+                                <div class="input-group date" id="take_invoice" data-target-input="nearest">
+                                    <input name="take_invoice" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#take_invoice"/>
+                                    <div class="input-group-append" data-target="#take_invoice" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <span class="text-muted" for="pay_money">Pay Money</span>
-                                <input name="pay_money" id="pay_money" data-toggle="datetimepicker" data-target="#pay_money"  type="text" class="form-control form-control-sm" >
+                                <div class="input-group date" id="pay_money" data-target-input="nearest">
+                                    <input name="pay_money" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#pay_money"/>
+                                    <div class="input-group-append" data-target="#pay_money" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-default btn-lg" >បញ្ចូនទិន្នន័យ</button>
+                            <button type="submit" class="btn btn-dark " >បញ្ចូនទិន្នន័យ</button>
+                            <button type="reset" class="btn btn-default" >លុបចោល</button>
                         </form>
                     </div>
                 </div>
@@ -95,6 +125,83 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="edit">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card" id="addForm">
+                    <div class="card-header">
+                        <h3 class="card-title">កែសំម្រួលទិន្នន័យ</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formEdit">
+                            @csrf
+                            <input type="hidden" name="id" id="id_edit">
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="name_pop_edit">Name POP</span>
+                                <input name="name_pop" id="name_pop_edit"  type="text" class="form-control form-control-sm form-control form-control-sm-sm">
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="plan_code_edit">Plan Code</span>
+                                <input name="plan_code" id="plan_code_edit"  type="text" class="form-control form-control-sm form-control form-control-sm-sm" >
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="request_day_edit">Request Day</span>
+                                <div class="input-group date" id="request_day_edit" data-target-input="nearest">
+                                    <input name="request_day" id="request_day_edit_input" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#request_day_edit"/>
+                                    <div class="input-group-append" data-target="#request_day_edit" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="return_day_edit">Return Day</span>
+                                <div class="input-group date" id="return_day_edit" data-target-input="nearest">
+                                    <input name="return_day" id="return_day_edit_input" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#return_day_edit"/>
+                                    <div class="input-group-append" data-target="#return_day_edit" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="send_file_opn_edit">Send file opn</span>
+                                <div class="input-group date" id="send_file_opn_edit" data-target-input="nearest">
+                                    <input name="send_file_opn" id="send_file_opn_edit_input" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#send_file_opn_edit"/>
+                                    <div class="input-group-append" data-target="#send_file_opn_edit" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="take_invoice_edit">Take Invoice</span>
+                                <div class="input-group date" id="take_invoice_edit" data-target-input="nearest">
+                                    <input name="take_invoice" id="take_invoice_edit_input" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#take_invoice_edit"/>
+                                    <div class="input-group-append" data-target="#take_invoice_edit" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-1">
+                                <span class="text-muted" for="pay_money_edit">Pay Money</span>
+                                <div class="input-group date" id="pay_money_edit" data-target-input="nearest">
+                                    <input name="pay_money" id="pay_money_edit_input" type="text" class="form-control form-control-sm datetimepicker-input" data-target="#pay_money_edit"/>
+                                    <div class="input-group-append" data-target="#pay_money_edit" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dark" >កែសំម្រួលទិន្នន័យ</button>
+                            <button type="reset" class="btn btn-default" >លុបចោល</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('dist/css/bootstrap-datetimepicker.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('dist/css/sweetalert2.min.css') }}" />
@@ -108,7 +215,22 @@
 <script src="{{ asset('dist/js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('dist/js/deploy_cable.js') }}"></script>
 <script>
-    $('#request_day,#return_day,#send_file_opn,#take_invoice,#pay_money').datetimepicker({format: 'L'});
+    $('#request_day,#return_day,#send_file_opn,#take_invoice,#pay_money').datetimepicker({
+        format: 'DD-MM-YYYY',
+        useCurrent: false,
+        autoclose: true,
+    });
+    $('#request_day_edit,#return_day_edit,#send_file_opn_edit,#take_invoice_edit,#pay_money_edit').datetimepicker({
+        format: 'DD-MM-YYYY',
+        useCurrent: false,
+        autoclose: true,
+    });
+
+    $("#formEdit").submit(function(e){
+        updateDataDeployCable($(this).serialize());
+        e.preventDefault();
+    })
+
     $("#formAdd").submit(function(e){
         e.preventDefault();
         var formData = $(this).serialize();
@@ -134,12 +256,12 @@
                     }
                 },
                 error:function(x,s){
+                    console.error(x);
                     submitBtn.find('i').remove();
                     submitBtn.prop('disabled',false);
                     Toast.fire({ icon: 'error',html: `<span class="text-muted" class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="text-muted" class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
                 }
             })
-    
     });
 </script>
 

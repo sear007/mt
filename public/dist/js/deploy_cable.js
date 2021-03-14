@@ -7,8 +7,68 @@ const Toast = Swal.mixin({
     timer: 3000
 });
 moment.locale('km');
+window.updateDataDeployCable = function(formData){
+    $.ajax({
+        url:'/deploy_cable/update',
+        method:"post",
+        data: formData,
+        success:function(data){
+            if(data.code===200){
+                Toast.fire({ icon: 'success',html: `<span class="text-muted" class="ml-2">${data.message}</span>`,});
+                getDataDeployCable(1,$("select[name='show']").val(),true);
+                $("#edit").modal('hide');
+            }else{
+                $.map(data.errors,function(v,i){
+                    $(`#${i}_edit`).addClass('is-invalid');
+                    setTimeout(() => { $(`#${i}_edit`).removeClass('is-invalid')  }, 2000);
+                })
+            }
+        },
+        error:function(x,s){
+            console.error(x);
+            Toast.fire({ icon: 'error',html: `<span class="text-muted" class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="text-muted" class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
+        }
+    })
+}
+window.editDataDeployCable = function(id){
+    $.get({
+        url:"/deploy_cable/edit/"+id,
+        success:function(data){
+            $("#edit").modal('show');
+            $("#id_edit").val(id);
+            $("#name_pop_edit").val(data.name_pop);
+            $("#plan_code_edit").val(data.plan_code);
+            $("#request_day_edit_input").val(data.request_day ? moment(data.request_day).locale('en').format("DD-MM-YYYY"):'');
+            $("#return_day_edit_input").val(data.return_day ? moment(data.return_day).locale('en').format("DD-MM-YYYY"):'');
+            $("#send_file_opn_edit_input").val(data.send_file_opn ? moment(data.send_file_opn).locale('en').format("DD-MM-YYYY"):'');
+            $("#take_invoice_edit_input").val(data.take_invoice ? moment(data.take_invoice).locale('en').format("DD-MM-YYYY"):'');
+            $("#pay_money_edit_input").val(data.pay_money ? moment(data.pay_money).locale('en').format("DD-MM-YYYY"):'');
+        },
+        error:function(x,s){
+            console.error(x);
+            Toast.fire({ icon: 'error',html: `<span class="text-muted" class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="text-muted" class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
+        }
+    })
+}
+window.removeDataDeployCable = function(id){
+    if(confirm("បញ្ជាក់! តើពិតជាលុបទិន្នន័យនេះមែនទេ?")){
+        $.ajax({
+            url:"/deploy_cable/destroy",
+            method:"post",
+            data:{"id":id,"_token":$('meta[name="csrf-token"]').attr('content')},
+            success:function(data){
+                getDataDeployCable(1,$("select[name='show']").val(),false);
+                $('[data-toggle="tooltip"]').tooltip('hide');
+                Toast.fire({ icon: 'success',html: `<span class="text-muted" class="ml-2">${data.message}</span>`});
+            },
+            error:function(x,s){
+                console.error(x);
+                Toast.fire({ icon: 'error',html: `<span class="text-muted" class="ml-2">ប្រព័ន្នទិន្នន័យមានបញ្ហា សូមអធ្យាស្រ័យ។</span><br><span class="text-muted" class="ml-2">ទំនាក់ទំនង ០៧៧៦៦៦១៦៥</span>`,})
+            }
+        });
+    }
+}
 window.getDataDeployCable = function(page,show,new_row){
-    
     $("#card-deploy-cable").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
     $("#card-deploy-cable .card-title").html(`របាយការណ៍ខ្សែរកាបទិ៍ OPN`);
     $.get({
@@ -82,15 +142,15 @@ window.getDataDeployCable = function(page,show,new_row){
                             <td>${ (data.current_page-1) * data.per_page +  i+1}</td>
                             <td>${v.name_pop}</td>
                             <td>${v.plan_code}</td>
-                            <td>${v.request_day?moment(v.request_day).locale('en').format("DD/MM/YYYY"):''}</td>
-                            <td>${v.return_day?moment(v.return_day).locale('en').format("DD/MM/YYYY"):''}</td>
-                            <td>${v.send_file_opn?moment(v.send_file_opn).locale('en').format("DD/MM/YYYY"):''}</td>
-                            <td>${v.take_invoice?moment(v.take_invoice).locale('en').format("DD/MM/YYYY"):''}</td>
-                            <td>${v.pay_money?moment(v.pay_money).locale('en').format("DD/MM/YYYY"):''}</td>
-                            <td>
-                            <div class="btn-group">
-                                <button data-toggle="tooltip" title="កែសំម្រួល" class="btn btn-default btn-sm"><i class="fas fa-edit"></i></button>
-                                <button data-toggle="tooltip" title="លុបចេញ" class="btn btn-default btn-sm"><i class="fas fa-trash text-danger"></i></button>
+                            <td>${v.request_day?moment(v.request_day).locale('en').format("DD-MM-YYYY"):''}</td>
+                            <td>${v.return_day?moment(v.return_day).locale('en').format("DD-MM-YYYY"):''}</td>
+                            <td>${v.send_file_opn?moment(v.send_file_opn).locale('en').format("DD-MM-YYYY"):''}</td>
+                            <td>${v.take_invoice?moment(v.take_invoice).locale('en').format("DD-MM-YYYY"):''}</td>
+                            <td>${v.pay_money?moment(v.pay_money).locale('en').format("DD-MM-YYYY"):''}</td>
+                            <td style="width:100px;padding:0">
+                            <div class="btn-group btn-block ">
+                                <button onclick="return editDataDeployCable(${v.id})" data-toggle="tooltip" title="កែសំម្រួល" class="btn btn-flat btn-default btn-sm"><i class="fas fa-edit"></i></button>
+                                <button onclick="return removeDataDeployCable(${v.id})" data-toggle="tooltip" title="លុបចេញ" class="btn btn-flat btn-default btn-sm"><i class="fas fa-trash text-danger"></i></button>
                             </div>
                             </td>
                     </tr>`;

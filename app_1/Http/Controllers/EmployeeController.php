@@ -146,10 +146,6 @@ class EmployeeController extends Controller
             ]);
         }
     }
-    public function print(Request $request){
-        $posts = Employee::orderBy('id','asc')->get();
-        return view('print/employees',compact('posts'));
-    }
 
     /**
      * Remove the specified resource from storage.

@@ -17,11 +17,11 @@ class CreateDeployCablesTable extends Migration
             $table->id();
             $table->string('name_pop');
             $table->string('plan_code');
-            $table->timestamp('request_day')->nullable();
-            $table->timestamp('return_day')->nullable();
-            $table->timestamp('send_file_opn')->nullable();
-            $table->timestamp('take_invoice')->nullable();
-            $table->timestamp('pay_money')->nullable();
+            $table->string('request_day')->nullable();
+            $table->string('return_day')->nullable();
+            $table->string('send_file_opn')->nullable();
+            $table->string('take_invoice')->nullable();
+            $table->string('pay_money')->nullable();
             $table->timestamps();
         });
     }

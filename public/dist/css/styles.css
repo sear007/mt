@@ -100,6 +100,11 @@
   .deploy_cable th span{
     display: block;
   }
-
-
+  .table-employee{
+    border: 1px solid #353535;
+  }
+  .table-employee thead th,.table-employee tbody td{
+    border: 1px solid #353535;
+  }
+  
 

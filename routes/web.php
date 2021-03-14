@@ -9,8 +9,12 @@ use App\Http\Controllers\DeployCableController;
 
 
 Route::get('/deploy_cable',[DeployCableController::class,'index'])->name('deploy_cable');
+Route::get('/deploy_cable/print',[DeployCableController::class,'deploy_cable_print']);
 Route::get('/deploy_cable/json',[DeployCableController::class,'getDataJson'])->name('getDataJson');
 Route::post('/deploy_cable/store',[DeployCableController::class,'store'])->name('deploy_cable_store');
+Route::post('/deploy_cable/destroy',[DeployCableController::class,'destroy'])->name('deploy_cable_destroy');
+Route::get('/deploy_cable/edit/{id}',[DeployCableController::class,'edit'])->name('deploy_cable_edit');
+Route::post('/deploy_cable/update',[DeployCableController::class,'update'])->name('deploy_cable_update');
 
 Route::get('/attendance',[AttendanceController::class,'index'])->name('attendance');
 Route::get('/json/employees', [EmployeeController::class,'employeeJson']);
@@ -23,6 +27,7 @@ Route::post('attendance/request_leave/destroy', [AttendanceController::class,'De
 Route::post('attendance/print',[AttendanceController::class,'PrintAttendances'])->name('print_attendance');
 
 
+Route::get('employees/print', [EmployeeController::class,'print'])->name('employees_print');
 Route::get('employees', [EmployeeController::class,'index'])->name('employees');
 Route::post('employees', [EmployeeController::class,'store'])->name('employees_store');
 Route::get('employees/edit/{id}', [EmployeeController::class,'edit'])->name('employees_edit');
