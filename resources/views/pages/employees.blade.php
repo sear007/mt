@@ -7,7 +7,7 @@
           <div class="row justify-content-center">
               <div class="col-md-12 col-lg-9">
                 <h3 class="py-2">២.២ បញ្ជីរឈ្មោះបុគ្គលិក</h3>
-                  <div class="card" id="card-list-employees">
+                  <div class="card card-outline card-info" id="card-list-employees">
                       <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <div>

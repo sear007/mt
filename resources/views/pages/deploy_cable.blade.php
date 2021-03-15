@@ -5,25 +5,28 @@
       <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
-               <div class="card" id="card-deploy-cable">
-                   <div class="card-header">
-                       <h3 class="card-title"></h3>
-                       <div class="card-tools">
-                        <a target="blank" href="{{url('/deploy_cable/print')}}" id="print-data" data-html="true" data-toggle="tooltip" title="<h3>ព្រីនឯកសារ</h3>"  class="btn btn-default btn-lg"><i class="fas fa-print"></i></a>
-                        <span data-html="true" data-toggle="tooltip" title="<h3>បញ្ចូលទិន្នន័យ</h3>">
-                            <button data-toggle="modal" data-target="#add" id="print-data"  class="btn btn-default btn-lg"><i class="fas fa-plus"></i></button>
-                        </span>
-                       </div>
-                       <div class="card-tools mr-3">
-                        <select class="custom-select custom-select-lg" name="show">
-                            <option selected  value="20">បង្ហាញម្តង 20</option>
-                            <option  value="50">បង្ហាញម្តង 50</option>
-                            <option value="100">បង្ហាញម្តង 100</option>
-                            <option  value="500">បង្ហាញម្តង 500</option>
-                        </select>
-                       </div>
-                   </div>
+
+                <h3 class="py-2">១.១ បើកខ្សែកាប OPN</h3>
+
+               <div class="card card-outline card-info" id="card-deploy-cable">
                    <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <a target="blank" href="{{url('/deploy_cable/print')}}" id="print-data" data-html="true" data-toggle="tooltip" title="<h3>ព្រីនឯកសារ</h3>"  class="btn btn-default"><i class="fas fa-print"></i></a>
+                            <span data-html="true" data-toggle="tooltip" title="<h3>បញ្ចូលទិន្នន័យ</h3>">
+                                <button data-toggle="modal" data-target="#add" id="print-data"  class="btn btn-default"><i class="fas fa-plus"></i></button>
+                            </span>
+                         </div>
+                        <div>
+                            <select class="custom-select" name="show">
+                                <option selected  value="20">បង្ហាញម្តង 20</option>
+                                <option  value="50">បង្ហាញម្តង 50</option>
+                                <option value="100">បង្ហាញម្តង 100</option>
+                                <option  value="500">បង្ហាញម្តង 500</option>
+                            </select>
+                            <input type="hidden" value="1" id="current_page">
+                        </div>
+                    </div>
                        <div class="table-responsive">
                            <table class="table table-bordered table-sm deploy_cable" id="deploy_cable">
                                <thead>

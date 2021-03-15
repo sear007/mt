@@ -5,18 +5,18 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
+            <h3 class="py-2 title"></h3>
             {{-- Attendance Card --}}
             <div class="card" id="attendance_card">
-              <div class="card-header">
-                <h3 class="card-title">អវត្តមានបុគ្គលិក</h3>
-                <div class="card-tools">
-                  <button id="prev-month" class="btn btn-sm btn-default"></button>
-                  <button id="next-month" class="btn btn-sm btn-default"></button>
-                  {{-- <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button> --}}
-                    <button id="print" type="submit" class="btn btn-lg"><i class="fas fa-print"></i></button>
-                </div>
-              </div>
               <div class="card-body">
+
+                <div class="d-flex justify-content-between mb-2">
+                  <button id="print" type="submit" class="btn btn-default btn-lg"><i class="fas fa-print"></i></button>
+                  <div>
+                    <button id="prev-month" class="btn btn-default"></button>
+                    <button id="next-month" class="btn btn-default"></button>
+                  </div>
+                </div>
                 <form id="form-print" method="POST" target="_blank" action="{{ route('print_attendance') }}">
                   @csrf
                   <input type="hidden" name="start" id="data-print-start">

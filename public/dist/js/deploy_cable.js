@@ -70,7 +70,6 @@ window.removeDataDeployCable = function(id){
 }
 window.getDataDeployCable = function(page,show,new_row){
     $("#card-deploy-cable").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`);
-    $("#card-deploy-cable .card-title").html(`របាយការណ៍ខ្សែរកាបទិ៍ OPN`);
     $.get({
         url: `/deploy_cable/json?page=${page}&show=${show}`,
         success:function(data){
