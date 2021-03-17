@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DeployCableController;
+use App\Http\Controllers\RunCableController;
 
 
 Route::get('/deploy_cable',[DeployCableController::class,'index'])->name('deploy_cable');
@@ -15,6 +16,10 @@ Route::post('/deploy_cable/store',[DeployCableController::class,'store'])->name(
 Route::post('/deploy_cable/destroy',[DeployCableController::class,'destroy'])->name('deploy_cable_destroy');
 Route::get('/deploy_cable/edit/{id}',[DeployCableController::class,'edit'])->name('deploy_cable_edit');
 Route::post('/deploy_cable/update',[DeployCableController::class,'update'])->name('deploy_cable_update');
+
+Route::get('/run_cable', [RunCableController::class,'index'])->name('run_cable');
+
+
 
 Route::get('/attendance',[AttendanceController::class,'index'])->name('attendance');
 Route::get('/json/employees', [EmployeeController::class,'employeeJson']);

@@ -11,7 +11,7 @@
             <a href="#" class="nav-link"><p>១. គ្រប់គ្រងខ្សែរកាប<i class="fas fa-angle-left right"></i></p></a>
             <ul class="nav nav-treeview">
               <li class="nav-item"><a href="{{ route('deploy_cable') }}" class="nav-link">១.១ បើកខ្សែរកាប OPN</a></li>
-              <li class="nav-item"><a href="{{ route('deploy_cable') }}" class="nav-link">១.២ របាយការណ៍ អូសកាប</a></li>
+              <li class="nav-item"><a href="{{ route('run_cable') }}" class="nav-link">១.២ របាយការណ៍ អូសកាប</a></li>
             </ul>
           </li>
           <li class="nav-item has-treeview">
