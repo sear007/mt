@@ -5,9 +5,7 @@
       <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
-
                 <h3 class="py-2">១.១ បើកខ្សែកាប OPN</h3>
-
                <div class="card card-outline card-info" id="card-deploy-cable">
                    <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">

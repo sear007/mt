@@ -106,5 +106,18 @@
   .table-employee thead th,.table-employee tbody td{
     border: 1px solid #353535;
   }
-  
+  .table-run-cable{
+    border: 1px solid #353535;
+  }
+  .table-run-cable thead th,.table-run-cable tbody td{
+    border: 1px solid #353535;
+  }
+  .table-run-cable thead th{
+    text-align: center;
+    vertical-align: middle;
+    background: #fff0b9;
+  }
+  .table-run-cable td{
+    background: #f3e9c7;
+  }
 
